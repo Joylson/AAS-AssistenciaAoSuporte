@@ -3,54 +3,69 @@ package br.com.aas.entities;
 import java.io.Serializable;
 
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
+import br.com.aas.entities.enums.Driver;
+
 @Entity
-public class DatabaseConfig implements Serializable{
+public class DatabaseConfig implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-	
+
 	@Id
-	@GeneratedValue(strategy= GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
 	private String url;
 	private String user;
 	private String password;
-	private String driver;
 	
-	
+	@Enumerated(EnumType.ORDINAL)
+	private Driver driver;
+
 	public long getId() {
 		return id;
 	}
+
 	public void setId(long id) {
 		this.id = id;
 	}
+
 	public String getUrl() {
 		return url;
 	}
+
 	public void setUrl(String url) {
 		this.url = url;
 	}
+
 	public String getUser() {
 		return user;
 	}
+
 	public void setUser(String user) {
 		this.user = user;
 	}
+
 	public String getPassword() {
 		return password;
 	}
+
 	public void setPassword(String password) {
 		this.password = password;
 	}
-	public String getDriver() {
+
+	public Driver getDriver() {
 		return driver;
 	}
-	public void setDriver(String driver) {
+
+	public void setDriver(Driver driver) {
 		this.driver = driver;
 	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -62,6 +77,7 @@ public class DatabaseConfig implements Serializable{
 		result = prime * result + ((user == null) ? 0 : user.hashCode());
 		return result;
 	}
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -71,10 +87,7 @@ public class DatabaseConfig implements Serializable{
 		if (getClass() != obj.getClass())
 			return false;
 		DatabaseConfig other = (DatabaseConfig) obj;
-		if (driver == null) {
-			if (other.driver != null)
-				return false;
-		} else if (!driver.equals(other.driver))
+		if (driver != other.driver)
 			return false;
 		if (id != other.id)
 			return false;
@@ -95,6 +108,7 @@ public class DatabaseConfig implements Serializable{
 			return false;
 		return true;
 	}
+
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
@@ -102,6 +116,5 @@ public class DatabaseConfig implements Serializable{
 				.append(", password=").append(password).append(", driver=").append(driver).append("]");
 		return builder.toString();
 	}
-	
-	
+
 }
