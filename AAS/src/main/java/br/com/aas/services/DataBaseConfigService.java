@@ -10,7 +10,7 @@ import br.com.aas.entities.DatabaseConfig;
 import br.com.aas.repositorios.DataBaseConfigRepository;
 
 @Service
-public class DataBaseConfigServico {
+public class DataBaseConfigService {
 
 	@Autowired
 	private DataBaseConfigRepository repository;

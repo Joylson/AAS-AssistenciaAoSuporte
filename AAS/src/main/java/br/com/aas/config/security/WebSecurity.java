@@ -14,7 +14,10 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 @EnableWebSecurity
 public class WebSecurity extends WebSecurityConfigurerAdapter {
 
-	private final String[] PUBLIC = { "/h2/**" };
+	private final String[] PUBLIC = { 
+			"/h2/**", 
+			"/DataBaseConfig/**"
+	};
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
