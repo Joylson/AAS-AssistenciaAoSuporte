@@ -22,7 +22,8 @@ public class DatabaseConfig implements Serializable {
 	private String url;
 	private String user;
 	private String password;
-	
+	private boolean active;
+
 	@Enumerated(EnumType.ORDINAL)
 	private Driver driver;
 
@@ -66,10 +67,19 @@ public class DatabaseConfig implements Serializable {
 		this.driver = driver;
 	}
 
+	public boolean isActive() {
+		return active;
+	}
+
+	public void setActive(boolean active) {
+		this.active = active;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
+		result = prime * result + (active ? 1231 : 1237);
 		result = prime * result + ((driver == null) ? 0 : driver.hashCode());
 		result = prime * result + (int) (id ^ (id >>> 32));
 		result = prime * result + ((password == null) ? 0 : password.hashCode());
@@ -87,6 +97,8 @@ public class DatabaseConfig implements Serializable {
 		if (getClass() != obj.getClass())
 			return false;
 		DatabaseConfig other = (DatabaseConfig) obj;
+		if (active != other.active)
+			return false;
 		if (driver != other.driver)
 			return false;
 		if (id != other.id)
@@ -111,10 +123,8 @@ public class DatabaseConfig implements Serializable {
 
 	@Override
 	public String toString() {
-		StringBuilder builder = new StringBuilder();
-		builder.append("DatabaseConfig [id=").append(id).append(", url=").append(url).append(", user=").append(user)
-				.append(", password=").append(password).append(", driver=").append(driver).append("]");
-		return builder.toString();
+		return "DatabaseConfig [id=" + id + ", url=" + url + ", user=" + user + ", password=" + password + ", active="
+				+ active + ", driver=" + driver + "]";
 	}
 
 }
