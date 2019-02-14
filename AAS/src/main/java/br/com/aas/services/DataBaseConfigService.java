@@ -3,7 +3,6 @@ package br.com.aas.services;
 import java.util.List;
 import java.util.zip.DataFormatException;
 
-import org.hibernate.criterion.NullExpression;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -36,6 +35,8 @@ public class DataBaseConfigService {
 		validateDataConfig(dataConfig);
 
 		dataConfig.setId(0);
+		dataConfig.setActive(false);
+		
 		repository.save(dataConfig);
 	}
 
@@ -43,6 +44,12 @@ public class DataBaseConfigService {
 		if (dataConfig.getId() == 0) {
 			throw new BusinessException("Informe o id do usuario!!");
 		}
+		
+		DatabaseConfig dbBase = repository.findById(dataConfig.getId())
+				.orElseThrow(() -> new NullPointerException("Data Base não encotrada"));
+		
+		dataConfig.setActive(dbBase.isActive());
+		
 		validateDataConfig(dataConfig);
 
 		repository.save(dataConfig);
@@ -88,6 +95,15 @@ public class DataBaseConfigService {
 		
 		db.setActive(true);
 		repository.save(db);
+	}
+	
+	
+	public boolean validateActive(long id) {
+		if (id == 0) {
+			throw new BusinessException("Informe um id valido!!");
+		}
+		
+		return repository.validateActive(id);
 	}
 
 }

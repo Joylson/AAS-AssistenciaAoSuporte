@@ -51,7 +51,6 @@ public class Initialization implements CommandLineRunner{
 			e.printStackTrace();
 		}
 		
-		System.out.println(DBService.findByActive(true));
 	}
 
 }

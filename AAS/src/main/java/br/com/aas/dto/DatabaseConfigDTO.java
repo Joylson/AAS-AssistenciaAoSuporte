@@ -1,38 +1,28 @@
-package br.com.aas.entities;
+package br.com.aas.dto;
 
-import java.io.Serializable;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.validation.constraints.NotEmpty;
 
+import org.hibernate.validator.constraints.Length;
 import org.modelmapper.ModelMapper;
 
-import br.com.aas.dto.DatabaseConfigDTO;
+import br.com.aas.entities.DatabaseConfig;
 import br.com.aas.entities.enums.Driver;
 
-@Entity
-public class DatabaseConfig implements Serializable {
+public class DatabaseConfigDTO {
 
-	private static final long serialVersionUID = 1L;
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
-	@Column(name="url",length=80,nullable=false)
+	@NotEmpty(message="Necessario informar uma url")
+	@Length(max=80, message="limiter de 80 caracter na url")
 	private String url;
-	@Column(name="user",length=50,nullable=false)
+	@NotEmpty(message="Necessario informar uma user")
+	@Length(max=80, message="limiter de 50 caracter no usuario")
 	private String user;
-	@Column(name="password",length=30)
+	@Length(max=80, message="limiter de 30 caracter na senha")
 	private String password;
-	@Column(name="active")
 	private boolean active;
 
-	@Enumerated(EnumType.ORDINAL)
 	private Driver driver;
 
 	public long getId() {
@@ -104,7 +94,7 @@ public class DatabaseConfig implements Serializable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		DatabaseConfig other = (DatabaseConfig) obj;
+		DatabaseConfigDTO other = (DatabaseConfigDTO) obj;
 		if (active != other.active)
 			return false;
 		if (driver != other.driver)
@@ -134,9 +124,10 @@ public class DatabaseConfig implements Serializable {
 		return "DatabaseConfig [id=" + id + ", url=" + url + ", user=" + user + ", password=" + password + ", active="
 				+ active + ", driver=" + driver + "]";
 	}
-
-	public DatabaseConfigDTO toDTO() {
+	
+	public DatabaseConfig toEntity() {
 		ModelMapper map = new ModelMapper();
-		return map.map(this, DatabaseConfigDTO.class);
+		return map.map(this, DatabaseConfig.class);
 	}
+
 }
