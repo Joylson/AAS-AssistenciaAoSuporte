@@ -1,6 +1,5 @@
 package br.com.aas.dto;
 
-
 import javax.validation.constraints.NotEmpty;
 
 import org.hibernate.validator.constraints.Length;
@@ -11,18 +10,15 @@ import br.com.aas.entities.enums.Driver;
 
 public class DatabaseConfigDTO {
 
-
 	private long id;
-	@NotEmpty(message="Necessario informar uma url")
-	@Length(max=80, message="limiter de 80 caracter na url")
+	@NotEmpty(message = "Necessario informar uma url")
+	@Length(max = 80, message = "limiter de 80 caracter na url")
 	private String url;
-	@NotEmpty(message="Necessario informar uma user")
-	@Length(max=80, message="limiter de 50 caracter no usuario")
+	@NotEmpty(message = "Necessario informar uma user")
+	@Length(max = 50, message = "limiter de 50 caracter no usuario")
 	private String user;
-	@Length(max=80, message="limiter de 30 caracter na senha")
+	@Length(max = 30, message = "limiter de 30 caracter na senha")
 	private String password;
-	private boolean active;
-
 	private Driver driver;
 
 	public long getId() {
@@ -65,19 +61,10 @@ public class DatabaseConfigDTO {
 		this.driver = driver;
 	}
 
-	public boolean isActive() {
-		return active;
-	}
-
-	public void setActive(boolean active) {
-		this.active = active;
-	}
-
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + (active ? 1231 : 1237);
 		result = prime * result + ((driver == null) ? 0 : driver.hashCode());
 		result = prime * result + (int) (id ^ (id >>> 32));
 		result = prime * result + ((password == null) ? 0 : password.hashCode());
@@ -95,8 +82,6 @@ public class DatabaseConfigDTO {
 		if (getClass() != obj.getClass())
 			return false;
 		DatabaseConfigDTO other = (DatabaseConfigDTO) obj;
-		if (active != other.active)
-			return false;
 		if (driver != other.driver)
 			return false;
 		if (id != other.id)
@@ -121,10 +106,10 @@ public class DatabaseConfigDTO {
 
 	@Override
 	public String toString() {
-		return "DatabaseConfig [id=" + id + ", url=" + url + ", user=" + user + ", password=" + password + ", active="
-				+ active + ", driver=" + driver + "]";
+		return "DatabaseConfigDTO [id=" + id + ", url=" + url + ", user=" + user + ", password=" + password
+				+ ", driver=" + driver + "]";
 	}
-	
+
 	public DatabaseConfig toEntity() {
 		ModelMapper map = new ModelMapper();
 		return map.map(this, DatabaseConfig.class);

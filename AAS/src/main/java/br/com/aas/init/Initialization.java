@@ -12,7 +12,7 @@ import br.com.aas.services.DataBaseConfigService;
 public class Initialization implements CommandLineRunner{
 
 	@Autowired
-	private DataBaseConfigService DBService;
+	private DataBaseConfigService dbService;
 	
 	
 	@Override
@@ -43,9 +43,11 @@ public class Initialization implements CommandLineRunner{
 		
 		try {
 			
-			DBService.save(db);
-			DBService.save(db2);
-			DBService.save(db3);
+			dbService.save(db);
+			dbService.save(db2);
+			dbService.save(db3);
+			
+			dbService.activeDataConfig(db.getId());
 			
 		} catch (Exception e) {
 			e.printStackTrace();
