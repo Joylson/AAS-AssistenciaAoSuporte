@@ -1,7 +1,6 @@
 package br.com.aas.services;
 
 import java.util.List;
-import java.util.zip.DataFormatException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,7 +15,7 @@ public class DataBaseConfigService {
 	@Autowired
 	private DataBaseConfigRepository repository;
 
-	private void validateDataConfig(DatabaseConfig dataConfig) throws BusinessException {
+	private void validateDataConfig(DatabaseConfig dataConfig) {
 		if (dataConfig.getDriver() == null) {
 			throw new BusinessException("Informe o drive do banco!!");
 		}
@@ -31,7 +30,7 @@ public class DataBaseConfigService {
 		}
 	}
 
-	public void save(DatabaseConfig dataConfig) throws BusinessException {
+	public void save(DatabaseConfig dataConfig) {
 		validateDataConfig(dataConfig);
 
 		dataConfig.setId(0);
@@ -40,13 +39,13 @@ public class DataBaseConfigService {
 		repository.save(dataConfig);
 	}
 
-	public void update(DatabaseConfig dataConfig) throws BusinessException, NullPointerException {
+	public void update(DatabaseConfig dataConfig) {
 		if (dataConfig.getId() == 0) {
-			throw new BusinessException("Informe o id do usuario!!");
+			throw new BusinessException("Informe o identificador do usuario!!");
 		}
 		
 		DatabaseConfig dbBase = repository.findById(dataConfig.getId())
-				.orElseThrow(() -> new NullPointerException("Data Base não encotrada"));
+				.orElseThrow(() -> new NullPointerException("Banco de dados não encotrada"));
 		
 		dataConfig.setActive(dbBase.isActive());
 		
@@ -61,31 +60,30 @@ public class DataBaseConfigService {
 
 	public DatabaseConfig find(long id) {
 		if (id == 0) {
-			throw new BusinessException("Informe um id valido!!");
+			throw new BusinessException("Informe um identificador valido!!");
 		}
 		return repository.findById(id)
-				.orElseThrow(() -> new NullPointerException("Data Base não encontrado com o filtro especificado!!"));
+				.orElseThrow(() -> new NullPointerException("Banco de dados não encontrado com o filtro especificado!!"));
 	}
 	
-	public List<DatabaseConfig> findByActive(boolean active) 
-			throws BusinessException, DataFormatException, NullPointerException {
+	public List<DatabaseConfig> findByActive(boolean active) {
 		return repository.findByActive(active);
 	}
 	
-	public void activeDataConfig(long id) throws DataFormatException {
+	public void activeDataConfig(long id) {
 		if (id == 0) {
-			throw new BusinessException("Informe um id valido!!");
+			throw new BusinessException("Informe um identificador valido!!");
 		}
 		
-		DatabaseConfig db = repository.findById(id).orElseThrow(() -> new NullPointerException("Data Base não encotrada"));			
+		DatabaseConfig db = repository.findById(id).orElseThrow(() -> new NullPointerException("Banco de dados não encotrada"));			
 		
 		if(db.isActive()) {
-			throw new BusinessException("Data Base já activa!!");			
+			throw new BusinessException("Banco de dados já activa!!");			
 		}
 		
 		List<DatabaseConfig> dbs = repository.findByActive(true);
 		if(dbs.size() > 1) {
-			throw new DataFormatException("Incosistencia no banco!!");
+			throw new BusinessException("Incosistencia no banco!!");
 		}
 		
 		if(dbs.size() > 0) {
@@ -100,7 +98,7 @@ public class DataBaseConfigService {
 	
 	public boolean validateActive(long id) {
 		if (id == 0) {
-			throw new BusinessException("Informe um id valido!!");
+			throw new BusinessException("Informe um identificador valido!!");
 		}
 		
 		return repository.validateActive(id);

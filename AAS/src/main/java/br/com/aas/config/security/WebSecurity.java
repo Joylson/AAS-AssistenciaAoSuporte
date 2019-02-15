@@ -14,14 +14,11 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 @EnableWebSecurity
 public class WebSecurity extends WebSecurityConfigurerAdapter {
 
-	private final String[] PUBLIC = { 
-			"/h2/**", 
-			"/DataBaseConfig/**"
-	};
+	private final String[] PUBLIC = { "/h2/**", "/DataBaseConfig/**" };
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-		http.headers().frameOptions().disable().and().cors().and().csrf().disable().authorizeRequests()
+		http.cors().disable().csrf().disable().headers().frameOptions().disable().and().authorizeRequests()
 				.antMatchers(PUBLIC).permitAll().anyRequest().authenticated().and().sessionManagement()
 				.sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 	}
