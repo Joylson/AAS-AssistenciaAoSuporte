@@ -36,19 +36,26 @@ public class DataBaseConfigResource {
 		List<DatabaseConfig> dbs = service.findByActive(active);
 		return ResponseEntity.ok(dbs);
 	}
+	
+	
+	@GetMapping(value="/active/{id}")
+	public ResponseEntity<DatabaseConfig> activeDataBase(@PathVariable("id") long id) {
+		DatabaseConfig db = service.activeDataConfig(id);
+		return ResponseEntity.ok(db);
+	}
 
 	@PostMapping
-	public ResponseEntity<Void> post(@Valid @RequestBody DatabaseConfigDTO dbDTO) {
+	public ResponseEntity<DatabaseConfig> post(@Valid @RequestBody DatabaseConfigDTO dbDTO) {
 		DatabaseConfig db = dbDTO.toEntity();
 		service.save(db);
-		return ResponseEntity.ok().build();
+		return ResponseEntity.ok(db);
 	}
 
 	@PutMapping(value="/{id}")
-	public ResponseEntity<Void> put(@Valid @RequestBody DatabaseConfigDTO dbDTO, @PathVariable("id") long id) {
+	public ResponseEntity<DatabaseConfig> put(@Valid @RequestBody DatabaseConfigDTO dbDTO, @PathVariable("id") long id) {
 		DatabaseConfig db = dbDTO.toEntity();
 		db.setId(id);
 		service.update(db);
-		return ResponseEntity.ok().build();
+		return ResponseEntity.ok(db);
 	}
 }

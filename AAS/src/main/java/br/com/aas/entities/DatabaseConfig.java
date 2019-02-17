@@ -9,6 +9,7 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Table;
 
 import org.modelmapper.ModelMapper;
 
@@ -16,6 +17,7 @@ import br.com.aas.dto.DatabaseConfigDTO;
 import br.com.aas.entities.enums.Driver;
 
 @Entity
+@Table(name="database_config")
 public class DatabaseConfig implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -32,6 +34,7 @@ public class DatabaseConfig implements Serializable {
 	@Column(name="active")
 	private boolean active;
 
+	@Column(name="driver")
 	@Enumerated(EnumType.ORDINAL)
 	private Driver driver;
 

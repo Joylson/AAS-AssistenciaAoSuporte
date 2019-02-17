@@ -30,16 +30,16 @@ public class DataBaseConfigService {
 		}
 	}
 
-	public void save(DatabaseConfig dataConfig) {
+	public DatabaseConfig save(DatabaseConfig dataConfig) {
 		validateDataConfig(dataConfig);
 
 		dataConfig.setId(0);
 		dataConfig.setActive(false);
 		
-		repository.save(dataConfig);
+		return repository.save(dataConfig);
 	}
 
-	public void update(DatabaseConfig dataConfig) {
+	public DatabaseConfig update(DatabaseConfig dataConfig) {
 		if (dataConfig.getId() == 0) {
 			throw new BusinessException("Informe o identificador do usuario!!");
 		}
@@ -51,7 +51,7 @@ public class DataBaseConfigService {
 		
 		validateDataConfig(dataConfig);
 
-		repository.save(dataConfig);
+		return repository.save(dataConfig);
 	}
 
 	public List<DatabaseConfig> list() {
@@ -70,7 +70,7 @@ public class DataBaseConfigService {
 		return repository.findByActive(active);
 	}
 	
-	public void activeDataConfig(long id) {
+	public DatabaseConfig activeDataConfig(long id) {
 		if (id == 0) {
 			throw new BusinessException("Informe um identificador valido!!");
 		}
@@ -92,7 +92,7 @@ public class DataBaseConfigService {
 		}
 		
 		db.setActive(true);
-		repository.save(db);
+		return repository.save(db);
 	}
 	
 	
