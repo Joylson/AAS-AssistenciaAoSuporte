@@ -1,56 +1,31 @@
-package br.com.aas.entities;
+package br.com.aas.dto;
 
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.persistence.CollectionTable;
-import javax.persistence.Column;
-import javax.persistence.ElementCollection;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
+import org.hibernate.validator.constraints.Length;
 import org.modelmapper.ModelMapper;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
-import br.com.aas.dto.UserDTO;
+import br.com.aas.entities.User;
 import br.com.aas.entities.enums.Perfil;
 
-@Entity
-@Table(name = "user")
-public class User {
-
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private long id;
-	@Column(name = "name", length = 40, nullable = false)
+public class UserDTO {
+	@NotNull(message = "Campo Nome obrigatorio!!")
+	@Length(max = 40, message = "Numero maximo de caracter 40!!")
 	private String name;
-	@Column(name = "login", length = 30, nullable = false, unique = true)
+	@NotNull(message = "Campo Login obrigatorio!!")
+	@Length(max = 30, message = "Numero maximo de caracter 30!!")
 	private String login;
-	@JsonIgnore
-	@Column(name = "password", nullable = false)
+	@NotNull(message = "Campo Senha obrigatorio!!")
+	@Length(max = 30, message = "Numero maximo de caracter 30!!")
 	private String password;
-	@Column(name = "email", length = 50)
+	@Length(max = 50, message = "Numero maximo de caracter 50!!")
 	private String email;
 
-	@ElementCollection(fetch = FetchType.EAGER)
-	@Enumerated(EnumType.ORDINAL)
-	@CollectionTable(name = "PERFIL")
+	@NotNull(message = "Informe um perfil!!")
 	private Set<Perfil> perfis = new HashSet<>();
-
-	public long getId() {
-		return id;
-	}
-
-	public void setId(long id) {
-		this.id = id;
-	}
 
 	public String getName() {
 		return name;
@@ -88,12 +63,16 @@ public class User {
 		return perfis;
 	}
 
-	public void addPerfil(Perfil perfil) {
-		this.perfis.add(perfil);
-	}
-	
 	public void setPerfis(Set<Perfil> perfis) {
 		this.perfis = perfis;
+	}
+
+	@Override
+	public String toString() {
+		StringBuilder builder = new StringBuilder();
+		builder.append("UserDTO [name=").append(name).append(", login=").append(login).append(", password=")
+				.append(password).append(", email=").append(email).append(", perfis=").append(perfis).append("]");
+		return builder.toString();
 	}
 
 	@Override
@@ -101,7 +80,6 @@ public class User {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((email == null) ? 0 : email.hashCode());
-		result = prime * result + (int) (id ^ (id >>> 32));
 		result = prime * result + ((login == null) ? 0 : login.hashCode());
 		result = prime * result + ((name == null) ? 0 : name.hashCode());
 		result = prime * result + ((password == null) ? 0 : password.hashCode());
@@ -117,13 +95,11 @@ public class User {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		User other = (User) obj;
+		UserDTO other = (UserDTO) obj;
 		if (email == null) {
 			if (other.email != null)
 				return false;
 		} else if (!email.equals(other.email))
-			return false;
-		if (id != other.id)
 			return false;
 		if (login == null) {
 			if (other.login != null)
@@ -148,17 +124,8 @@ public class User {
 		return true;
 	}
 
-	@Override
-	public String toString() {
-		StringBuilder builder = new StringBuilder();
-		builder.append("User [id=").append(id).append(", name=").append(name).append(", login=").append(login)
-				.append(", password=").append(password).append(", email=").append(email).append(", perfis=")
-				.append(perfis).append("]");
-		return builder.toString();
-	}
-
-	public UserDTO toDTO() {
+	public User toEntity() {
 		ModelMapper map = new ModelMapper();
-		return map.map(this, UserDTO.class);
+		return map.map(this, User.class);
 	}
 }

@@ -3,6 +3,7 @@ package br.com.aas.init;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import br.com.aas.entities.DatabaseConfig;
 import br.com.aas.entities.User;
@@ -18,6 +19,8 @@ public class Initialization implements CommandLineRunner {
 	private DataBaseConfigService dbService;
 	@Autowired
 	private UserService usService;
+	@Autowired
+	private BCryptPasswordEncoder bCryptPasswordEncoder;
 
 	@Override
 	public void run(String... args) throws Exception {
@@ -53,7 +56,7 @@ public class Initialization implements CommandLineRunner {
 		User us = new User();
 		us.setName("joylson");
 		us.setLogin("joylson");
-		us.setPassword("123456");
+		us.setPassword(bCryptPasswordEncoder.encode("123456"));
 		us.setEmail("joylsont@gmail.com");
 		us.addPerfil(Perfil.ADMIN);
 		us.addPerfil(Perfil.PROGRAMADOR);

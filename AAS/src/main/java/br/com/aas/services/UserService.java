@@ -1,5 +1,7 @@
 package br.com.aas.services;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -26,11 +28,35 @@ public class UserService {
 	}
 
 	public User save(User user) {
-		
-		validateUser(user);
 
+		validateUser(user);
+		
+		if(repository.findByLogin(user.getLogin()).isPresent()){
+			throw new BusinessException("Usuario ja cadastrado!!");
+		}
+		
 		user.setId(0);
 		return repository.save(user);
+	}
+
+	public User update(User user) {
+		validateUser(user);
+
+		repository.findById(user.getId()).orElseThrow(() -> new BusinessException("Usuario não cadastrado!!"));
+
+		return repository.save(user);
+	}
+
+	public List<User> findAll() {
+		return repository.findAll();
+	}
+
+	public User findById(long id) {
+		if (id == 0) {
+			throw new BusinessException("Informe um identificador valido!!");
+		}
+
+		return repository.findById(id).orElseThrow(() -> new BusinessException("Usuario não encontrado!!"));
 	}
 
 }

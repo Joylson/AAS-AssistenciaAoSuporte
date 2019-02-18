@@ -35,7 +35,7 @@ public class DataBaseConfigService {
 
 		dataConfig.setId(0);
 		dataConfig.setActive(false);
-		
+
 		return repository.save(dataConfig);
 	}
 
@@ -43,13 +43,12 @@ public class DataBaseConfigService {
 		if (dataConfig.getId() == 0) {
 			throw new BusinessException("Informe o identificador do usuario!!");
 		}
-		
+		validateDataConfig(dataConfig);
+
 		DatabaseConfig dbBase = repository.findById(dataConfig.getId())
 				.orElseThrow(() -> new NullPointerException("Banco de dados não encotrada"));
-		
+
 		dataConfig.setActive(dbBase.isActive());
-		
-		validateDataConfig(dataConfig);
 
 		return repository.save(dataConfig);
 	}
@@ -58,49 +57,49 @@ public class DataBaseConfigService {
 		return repository.findAll();
 	}
 
-	public DatabaseConfig find(long id) {
+	public DatabaseConfig findById(long id) {
 		if (id == 0) {
 			throw new BusinessException("Informe um identificador valido!!");
 		}
-		return repository.findById(id)
-				.orElseThrow(() -> new NullPointerException("Banco de dados não encontrado com o filtro especificado!!"));
+		return repository.findById(id).orElseThrow(
+				() -> new NullPointerException("Banco de dados não encontrado com o filtro especificado!!"));
 	}
-	
+
 	public List<DatabaseConfig> findByActive(boolean active) {
 		return repository.findByActive(active);
 	}
-	
+
 	public DatabaseConfig activeDataConfig(long id) {
 		if (id == 0) {
 			throw new BusinessException("Informe um identificador valido!!");
 		}
-		
-		DatabaseConfig db = repository.findById(id).orElseThrow(() -> new NullPointerException("Banco de dados não encotrada"));			
-		
-		if(db.isActive()) {
-			throw new BusinessException("Banco de dados já activa!!");			
+
+		DatabaseConfig db = repository.findById(id)
+				.orElseThrow(() -> new NullPointerException("Banco de dados não encotrada"));
+
+		if (db.isActive()) {
+			throw new BusinessException("Banco de dados já activa!!");
 		}
-		
+
 		List<DatabaseConfig> dbs = repository.findByActive(true);
-		if(dbs.size() > 1) {
+		if (dbs.size() > 1) {
 			throw new BusinessException("Incosistencia no banco!!");
 		}
-		
-		if(dbs.size() > 0) {
+
+		if (dbs.size() > 0) {
 			dbs.get(0).setActive(false);
 			repository.save(dbs.get(0));
 		}
-		
+
 		db.setActive(true);
 		return repository.save(db);
 	}
-	
-	
+
 	public boolean validateActive(long id) {
 		if (id == 0) {
 			throw new BusinessException("Informe um identificador valido!!");
 		}
-		
+
 		return repository.validateActive(id);
 	}
 

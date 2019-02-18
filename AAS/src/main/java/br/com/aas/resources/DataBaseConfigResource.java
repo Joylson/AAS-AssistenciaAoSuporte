@@ -37,6 +37,11 @@ public class DataBaseConfigResource {
 		return ResponseEntity.ok(dbs);
 	}
 	
+	@GetMapping(value="/{id}")
+	public ResponseEntity<DatabaseConfig> get(@PathVariable("id") long id){
+		DatabaseConfig db = service.findById(id);
+		return ResponseEntity.ok(db);
+	}
 	
 	@GetMapping(value="/active/{id}")
 	public ResponseEntity<DatabaseConfig> activeDataBase(@PathVariable("id") long id) {
