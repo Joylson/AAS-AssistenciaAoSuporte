@@ -41,7 +41,7 @@ public class User {
 
 	@ElementCollection(fetch = FetchType.EAGER)
 	@Enumerated(EnumType.ORDINAL)
-	@CollectionTable(name = "PERFIL")
+	@CollectionTable(name = "perfil")
 	private Set<Perfil> perfis = new HashSet<>();
 
 	public long getId() {
@@ -91,7 +91,7 @@ public class User {
 	public void addPerfil(Perfil perfil) {
 		this.perfis.add(perfil);
 	}
-	
+
 	public void setPerfis(Set<Perfil> perfis) {
 		this.perfis = perfis;
 	}
