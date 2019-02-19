@@ -22,7 +22,7 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
 	@Autowired
 	private BCryptPasswordEncoder bCryptPasswordEncoder;
 
-	private final String[] PUBLIC = { "/h2/**", "/DataBaseConfig/**" /*, "/User/**"*/ };
+	private final String[] PUBLIC = { "/h2/**", "/DataBaseConfig/**" , "/User/**", "/QueryInfo/**" };
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {

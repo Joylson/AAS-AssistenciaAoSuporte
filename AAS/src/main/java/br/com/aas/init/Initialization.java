@@ -6,10 +6,12 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import br.com.aas.entities.DatabaseConfig;
+import br.com.aas.entities.QueryInfo;
 import br.com.aas.entities.User;
 import br.com.aas.entities.enums.Driver;
 import br.com.aas.entities.enums.Perfil;
 import br.com.aas.services.DataBaseConfigService;
+import br.com.aas.services.QueryInfoService;
 import br.com.aas.services.UserService;
 
 @Configuration
@@ -19,6 +21,8 @@ public class Initialization implements CommandLineRunner {
 	private DataBaseConfigService dbService;
 	@Autowired
 	private UserService usService;
+	@Autowired
+	private QueryInfoService qiService;
 	@Autowired
 	private BCryptPasswordEncoder bCryptPasswordEncoder;
 
@@ -63,6 +67,14 @@ public class Initialization implements CommandLineRunner {
 
 		// Cadastrando usuario
 		usService.save(us);
+		
+		QueryInfo qi = new QueryInfo();
+		qi.setSelect("SELECT NAME, PASSWORD FROM USUARIO");
+		qi.getAlias().put("NAME", "NOME");
+		qi.getAlias().put("PASSWORD", "SENHA");
+		
+		//Cadastrar consulta
+		qiService.save(qi);
 	}
 
 }

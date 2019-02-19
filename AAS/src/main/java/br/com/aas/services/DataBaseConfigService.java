@@ -41,7 +41,7 @@ public class DataBaseConfigService {
 
 	public DatabaseConfig update(DatabaseConfig dataConfig) {
 		if (dataConfig.getId() == 0) {
-			throw new BusinessException("Informe o identificador do usuario!!");
+			throw new BusinessException("Informe o identificador do banco de dados!!");
 		}
 		validateDataConfig(dataConfig);
 
@@ -53,7 +53,7 @@ public class DataBaseConfigService {
 		return repository.save(dataConfig);
 	}
 
-	public List<DatabaseConfig> list() {
+	public List<DatabaseConfig> findAll() {
 		return repository.findAll();
 	}
 

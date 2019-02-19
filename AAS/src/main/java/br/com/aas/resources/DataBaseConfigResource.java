@@ -28,7 +28,7 @@ public class DataBaseConfigResource {
 
 	@GetMapping()
 	public ResponseEntity<List<DatabaseConfig>> getAll() {
-		return ResponseEntity.ok(service.list());
+		return ResponseEntity.ok(service.findAll());
 	}
 
 	@GetMapping(params = "active")
