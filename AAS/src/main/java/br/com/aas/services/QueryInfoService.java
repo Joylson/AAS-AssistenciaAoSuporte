@@ -3,6 +3,9 @@ package br.com.aas.services;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
 import br.com.aas.config.exception.model.BusinessException;
@@ -50,5 +53,10 @@ public class QueryInfoService {
 		}
 		return repository.findById(id)
 				.orElseThrow(() -> new NullPointerException("Query não encontrado com o filtro especificado!!"));
+	}
+	
+	public Page<QueryInfo> findAll(Integer page, Integer size, String orderBy, String direction){
+	PageRequest request = PageRequest.of(page, size, Direction.valueOf(direction), orderBy);
+		return repository.findAll(request); 
 	}
 }
