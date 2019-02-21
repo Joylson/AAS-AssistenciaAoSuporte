@@ -2,16 +2,21 @@ package br.com.aas.resources;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import br.com.aas.dto.QueryInfoDTO;
 import br.com.aas.entities.QueryInfo;
 import br.com.aas.services.QueryInfoService;
 
@@ -34,14 +39,20 @@ public class QueryInfoResource {
 		return ResponseEntity.ok(query);
 	}
 
-	@GetMapping(value="/page")
-	public @ResponseBody ResponseEntity<Page<QueryInfo>> get(
-			@RequestParam(value = "page") Integer page,
+	@GetMapping(value = "/page")
+	public @ResponseBody ResponseEntity<Page<QueryInfo>> get(@RequestParam(value = "page") Integer page,
 			@RequestParam(value = "size", defaultValue = "24") Integer size,
 			@RequestParam(value = "orderby", defaultValue = "id") String orderby,
 			@RequestParam(value = "direction", defaultValue = "ASC") String direction) {
 		Page<QueryInfo> pages = service.findAll(page, size, orderby, direction);
 		return ResponseEntity.ok(pages);
+	}
+
+	@PostMapping
+	public ResponseEntity<QueryInfo> post(@Valid @RequestBody QueryInfoDTO dto) {
+		QueryInfo qi = dto.toEntity();
+		service.save(qi);
+		return ResponseEntity.ok(qi);
 	}
 
 }

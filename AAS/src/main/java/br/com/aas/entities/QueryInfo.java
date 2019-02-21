@@ -15,19 +15,23 @@ import javax.persistence.JoinColumn;
 import javax.persistence.MapKeyColumn;
 import javax.persistence.Table;
 
+import org.modelmapper.ModelMapper;
+
+import br.com.aas.dto.QueryInfoDTO;
+
 @Entity
-@Table(name="query_info")
+@Table(name = "query_info")
 public class QueryInfo {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
-	@Column(name = "select_info", nullable = false)
+	@Column(name = "select_info", nullable = false, length = 9000)
 	private String select;
 
 	@ElementCollection(fetch = FetchType.EAGER)
-	@CollectionTable(name = "alias_table", joinColumns=@JoinColumn(name="id"))
-	@MapKeyColumn(name = "coluna", length = 50)
+	@CollectionTable(name = "alias_table", joinColumns = @JoinColumn(name = "id"))
+	@MapKeyColumn(name = "coluna", length = 100)
 	@Column(name = "alias", length = 100)
 	private Map<String, String> alias = new HashMap<String, String>();
 
@@ -100,6 +104,11 @@ public class QueryInfo {
 		builder.append(alias);
 		builder.append("]");
 		return builder.toString();
+	}
+
+	public QueryInfoDTO toDTO() {
+		ModelMapper map = new ModelMapper();
+		return map.map(this, QueryInfoDTO.class);
 	}
 
 }

@@ -3,6 +3,7 @@ package br.com.aas.dto;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.Length;
@@ -12,13 +13,13 @@ import br.com.aas.entities.User;
 import br.com.aas.entities.enums.Perfil;
 
 public class UserDTO {
-	@NotNull(message = "Campo Nome obrigatorio!!")
+	@NotEmpty(message = "Campo Nome obrigatorio!!")
 	@Length(max = 40, message = "Numero maximo de caracter 40!!")
 	private String name;
-	@NotNull(message = "Campo Login obrigatorio!!")
+	@NotEmpty(message = "Campo Login obrigatorio!!")
 	@Length(max = 30, message = "Numero maximo de caracter 30!!")
 	private String login;
-	@NotNull(message = "Campo Senha obrigatorio!!")
+	@NotEmpty(message = "Campo Senha obrigatorio!!")
 	@Length(max = 30, message = "Numero maximo de caracter 30!!")
 	private String password;
 	@Length(max = 50, message = "Numero maximo de caracter 50!!")
