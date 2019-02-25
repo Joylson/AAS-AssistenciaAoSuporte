@@ -26,6 +26,10 @@ public class QueryInfo {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
+
+	@Column(name = "title", nullable=false, length=80)
+	private String title;
+
 	@Column(name = "select_info", nullable = false, length = 9000)
 	private String select;
 
@@ -36,11 +40,23 @@ public class QueryInfo {
 	private Map<String, String> alias = new HashMap<String, String>();
 
 	public long getId() {
-		return id;
+		return id; 
 	}
 
 	public void setId(long id) {
 		this.id = id;
+	}
+
+	public String getTitle() {
+		return title;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
+	}
+
+	public void setAlias(Map<String, String> alias) {
+		this.alias = alias;
 	}
 
 	public String getSelect() {
@@ -66,6 +82,7 @@ public class QueryInfo {
 		result = prime * result + ((alias == null) ? 0 : alias.hashCode());
 		result = prime * result + (int) (id ^ (id >>> 32));
 		result = prime * result + ((select == null) ? 0 : select.hashCode());
+		result = prime * result + ((title == null) ? 0 : title.hashCode());
 		return result;
 	}
 
@@ -90,14 +107,22 @@ public class QueryInfo {
 				return false;
 		} else if (!select.equals(other.select))
 			return false;
+		if (title == null) {
+			if (other.title != null)
+				return false;
+		} else if (!title.equals(other.title))
+			return false;
 		return true;
 	}
+	
 
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
-		builder.append("Query [id=");
+		builder.append("QueryInfo [id=");
 		builder.append(id);
+		builder.append(", title=");
+		builder.append(title);
 		builder.append(", select=");
 		builder.append(select);
 		builder.append(", alias=");

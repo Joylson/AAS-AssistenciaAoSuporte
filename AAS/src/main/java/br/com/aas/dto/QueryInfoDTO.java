@@ -12,11 +12,23 @@ import br.com.aas.entities.QueryInfo;
 
 public class QueryInfoDTO {
 
+	@NotEmpty(message = "Informe o titulo da consulta")
+	@Length(max = 80, message = "Seu titulo excede o limite de 80 caracter")
+	private String title;
+
 	@NotEmpty(message = "Informe o select de consulta")
 	@Length(max = 9000, message = "Seu select excedeu o limite 9000 caracters")
 	private String select;
 
 	private Map<@NotEmpty(message = "Alias com colunas não definidas") @Length(max = 100, message = "sua coluna excedeu o limite de 100 caracters") String, @NotEmpty(message = "Alias com alias não definidas") @Length(max = 100, message = "sua alias excedeu o limite de 100 caracters") String> alias = new HashMap<String, String>();
+
+	public String getTitle() {
+		return title;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
+	}
 
 	public String getSelect() {
 		return select;
@@ -40,6 +52,7 @@ public class QueryInfoDTO {
 		int result = 1;
 		result = prime * result + ((alias == null) ? 0 : alias.hashCode());
 		result = prime * result + ((select == null) ? 0 : select.hashCode());
+		result = prime * result + ((title == null) ? 0 : title.hashCode());
 		return result;
 	}
 
@@ -62,13 +75,20 @@ public class QueryInfoDTO {
 				return false;
 		} else if (!select.equals(other.select))
 			return false;
+		if (title == null) {
+			if (other.title != null)
+				return false;
+		} else if (!title.equals(other.title))
+			return false;
 		return true;
 	}
 
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
-		builder.append("QueryInfoDTO [select=");
+		builder.append("QueryInfoDTO [title=");
+		builder.append(title);
+		builder.append(", select=");
 		builder.append(select);
 		builder.append(", alias=");
 		builder.append(alias);

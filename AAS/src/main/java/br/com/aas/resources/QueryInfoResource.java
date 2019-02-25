@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -40,7 +41,7 @@ public class QueryInfoResource {
 	}
 
 	@GetMapping(value = "/page")
-	public @ResponseBody ResponseEntity<Page<QueryInfo>> get(@RequestParam(value = "page") Integer page,
+	public @ResponseBody ResponseEntity<Page<QueryInfo>> get(@RequestParam(value = "page", defaultValue="0") Integer page,
 			@RequestParam(value = "size", defaultValue = "24") Integer size,
 			@RequestParam(value = "orderby", defaultValue = "id") String orderby,
 			@RequestParam(value = "direction", defaultValue = "ASC") String direction) {
@@ -52,6 +53,15 @@ public class QueryInfoResource {
 	public ResponseEntity<QueryInfo> post(@Valid @RequestBody QueryInfoDTO dto) {
 		QueryInfo qi = dto.toEntity();
 		service.save(qi);
+		return ResponseEntity.ok(qi);
+	}
+	
+	@PutMapping(value="{id}")
+	public ResponseEntity<QueryInfo> put(@Valid @RequestBody QueryInfoDTO dto, @PathVariable("id") long id){
+		QueryInfo qi = dto.toEntity();
+		qi.setId(id);
+		
+		service.update(qi);
 		return ResponseEntity.ok(qi);
 	}
 

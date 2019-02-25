@@ -69,6 +69,7 @@ public class Initialization implements CommandLineRunner {
 		usService.save(us);
 		
 		QueryInfo qi = new QueryInfo();
+		qi.setTitle("CONSULTA USUARIO");
 		qi.setSelect("SELECT NAME, PASSWORD FROM USUARIO");
 		qi.getAlias().put("NAME", "NOME");
 		qi.getAlias().put("PASSWORD", "SENHA");
