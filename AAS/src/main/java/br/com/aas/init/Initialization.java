@@ -30,9 +30,9 @@ public class Initialization implements CommandLineRunner {
 	public void run(String... args) throws Exception {
 		DatabaseConfig db = new DatabaseConfig();
 
-		db.setUrl("jdbc:postgresql://localhost:5432/query_aas");
+		db.setUrl("jdbc:postgresql://localhost:5432/Teste");
 		db.setUser("postgres");
-		db.setPassword("a");
+		db.setPassword("91735129");
 		db.setDriver(Driver.POSTGRES);
 		db.setActive(true);
 
@@ -70,7 +70,7 @@ public class Initialization implements CommandLineRunner {
 		
 		QueryInfo qi = new QueryInfo();
 		qi.setTitle("CONSULTA USUARIO");
-		qi.setSelect("SELECT NAME, PASSWORD FROM USUARIO");
+		qi.setSelect("SELECT nome, email FROM USUARIO");
 		qi.getAlias().put("NAME", "NOME");
 		qi.getAlias().put("PASSWORD", "SENHA");
 		
