@@ -71,8 +71,8 @@ public class Initialization implements CommandLineRunner {
 		QueryInfo qi = new QueryInfo();
 		qi.setTitle("CONSULTA USUARIO");
 		qi.setSelect("SELECT nome, email FROM USUARIO");
-		qi.getAlias().put("NAME", "NOME");
-		qi.getAlias().put("PASSWORD", "SENHA");
+		qi.getAlias().put("nome", "NOME");
+		qi.getAlias().put("email", "E-MAIL");
 		
 		//Cadastrar consulta
 		qiService.save(qi);

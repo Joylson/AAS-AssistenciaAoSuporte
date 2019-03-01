@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 
 
 import br.com.aas.config.exception.model.BusinessException;
+import br.com.aas.config.exception.model.ValidationDataException;
 
 @ControllerAdvice
 public class ResourceExceptionHandler {
@@ -38,6 +39,13 @@ public class ResourceExceptionHandler {
 	public ResponseEntity<StandardError> nullPointer(NullPointerException e, HttpServletRequest request) {
 		StandardError err = new StandardError(System.currentTimeMillis(), HttpStatus.UNPROCESSABLE_ENTITY.value(),
 				"Valor não encontrado!!", e.getMessage(), request.getRequestURI());
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(err);
+	}
+	
+	@ExceptionHandler(ValidationDataException.class)
+	public ResponseEntity<StandardError> validationException(NullPointerException e, HttpServletRequest request) {
+		StandardError err = new StandardError(System.currentTimeMillis(), HttpStatus.UNPROCESSABLE_ENTITY.value(),
+				"Dados Incosistentes !!", e.getMessage(), request.getRequestURI());
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(err);
 	}
 	

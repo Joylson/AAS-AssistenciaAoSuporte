@@ -8,6 +8,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 import br.com.aas.entities.QueryResult;
+import br.com.aas.util.Util;
 
 public class ConnectionUtil {
 
@@ -26,7 +27,7 @@ public class ConnectionUtil {
 		query_result.setRows(getRows(rs, page, rows));
 		query_result.setCount(getCountRows(rs));
 		query_result.setPage(page);
-		query_result.setPages(query_result.getCount() / rows);
+		query_result.setPages(Util.roundUp((double) query_result.getCount() / (double)rows));
 		return query_result;
 	}
 
@@ -78,23 +79,29 @@ public class ConnectionUtil {
 		ResultSetMetaData rsmd = rs.getMetaData();
 		int count_col = rsmd.getColumnCount();
 		rs.last();
-		int count_row = rs.getRow();
 		rs.beforeFirst();
-		Object[][] rows = new Object[count_row][count_col];
+		Object[][] rows = new Object[rows_p][count_col];
 
 		int count_row_seq = 0;
+		int count_row_seq_value = 0;
 		page = (page - 1) * rows_p;
 		int pages = page + rows_p;
-		while (rs.next() || count_row_seq == pages) {
-			if (count_row_seq == page) {
+		while (rs.next() && count_row_seq < pages) {
+			if (count_row_seq >= page) {
 				for (int i = 1; i <= count_col; i++) {
-					rows[count_row_seq][i - 1] = rs.getObject(i);
+					rows[count_row_seq_value][i - 1] = rs.getObject(i);
 				}
+				count_row_seq_value++;
 			}
 			count_row_seq++;
 		}
 
-		return rows;
+		Object[][] rows_resut = new Object[count_row_seq_value][count_col];		
+		
+		for(int i = 0; i < count_row_seq_value ; i++) {
+			rows_resut[i] = rows[i];
+		}
+		return rows_resut;
 	}
 
 	private static int getCountRows(ResultSet rs) throws SQLException {
