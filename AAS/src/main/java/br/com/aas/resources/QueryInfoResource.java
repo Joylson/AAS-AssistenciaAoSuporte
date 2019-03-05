@@ -7,6 +7,7 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -48,7 +49,8 @@ public class QueryInfoResource {
 		Page<QueryInfo> pages = service.findAll(page, size, orderby, direction);
 		return ResponseEntity.ok(pages);
 	}
-
+	
+	@PreAuthorize("hasAnyRole('PROGRAMADOR')")
 	@PostMapping
 	public ResponseEntity<QueryInfo> post(@Valid @RequestBody QueryInfoDTO dto) {
 		QueryInfo qi = dto.toEntity();
@@ -56,6 +58,7 @@ public class QueryInfoResource {
 		return ResponseEntity.ok(qi);
 	}
 	
+	@PreAuthorize("hasAnyRole('PROGRAMADOR')")
 	@PutMapping(value="{id}")
 	public ResponseEntity<QueryInfo> put(@Valid @RequestBody QueryInfoDTO dto, @PathVariable("id") long id){
 		QueryInfo qi = dto.toEntity();

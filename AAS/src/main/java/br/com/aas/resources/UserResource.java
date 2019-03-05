@@ -6,6 +6,7 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,6 +20,7 @@ import br.com.aas.dto.UserDTO;
 import br.com.aas.entities.User;
 import br.com.aas.services.UserService;
 
+@PreAuthorize("hasAnyRole('PROGRAMADOR')")
 @RestController
 @RequestMapping(value = "/User")
 public class UserResource {

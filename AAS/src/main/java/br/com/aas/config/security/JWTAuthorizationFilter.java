@@ -1,7 +1,6 @@
 package br.com.aas.config.security;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Date;
 
 import javax.servlet.FilterChain;
@@ -12,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 
 import com.auth0.jwt.JWT;
@@ -22,10 +22,12 @@ import com.auth0.jwt.exceptions.TokenExpiredException;
 import br.com.aas.config.SecurityConstants;
 
 public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
+	
+	private UserDetailsServiceImpl service;
 
-	public JWTAuthorizationFilter(AuthenticationManager authManager) {
-
+	public JWTAuthorizationFilter(AuthenticationManager authManager, UserDetailsServiceImpl userDatailSer) {
 		super(authManager);
+		this.service = userDatailSer;
 	}
 
 	@Override
@@ -65,11 +67,12 @@ public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
 		String token = request.getHeader("Authorization");
 		if (token != null) {
 			// parse the token.
-			String user = JWT.require(Algorithm.HMAC512(SecurityConstants.SECRET.getBytes())).build()
+			String username = JWT.require(Algorithm.HMAC512(SecurityConstants.SECRET.getBytes())).build()
 					.verify(token.replace(SecurityConstants.TOKEN_PREFIX, "")).getSubject();
+			UserDetails user = service.loadUserByUsername(username);
 
 			if (user != null) {
-				return new UsernamePasswordAuthenticationToken(user, null, new ArrayList<>());
+				return new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
 			}
 			return null;
 		}

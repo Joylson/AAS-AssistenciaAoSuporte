@@ -6,6 +6,7 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -36,19 +37,20 @@ public class DataBaseConfigResource {
 		List<DatabaseConfig> dbs = service.findByActive(active);
 		return ResponseEntity.ok(dbs);
 	}
-	
-	@GetMapping(value="/{id}")
-	public ResponseEntity<DatabaseConfig> get(@PathVariable("id") long id){
+
+	@GetMapping(value = "/{id}")
+	public ResponseEntity<DatabaseConfig> get(@PathVariable("id") long id) {
 		DatabaseConfig db = service.findById(id);
 		return ResponseEntity.ok(db);
 	}
-	
-	@GetMapping(value="/active/{id}")
+
+	@GetMapping(value = "/active/{id}")
 	public ResponseEntity<DatabaseConfig> activeDataBase(@PathVariable("id") long id) {
 		DatabaseConfig db = service.activeDataConfig(id);
 		return ResponseEntity.ok(db);
 	}
 
+	@PreAuthorize("hasAnyRole('PROGRAMADOR')")
 	@PostMapping
 	public ResponseEntity<DatabaseConfig> post(@Valid @RequestBody DatabaseConfigDTO dbDTO) {
 		DatabaseConfig db = dbDTO.toEntity();
@@ -56,8 +58,10 @@ public class DataBaseConfigResource {
 		return ResponseEntity.ok(db);
 	}
 
-	@PutMapping(value="/{id}")
-	public ResponseEntity<DatabaseConfig> put(@Valid @RequestBody DatabaseConfigDTO dbDTO, @PathVariable("id") long id) {
+	@PreAuthorize("hasAnyRole('PROGRAMADOR')")
+	@PutMapping(value = "/{id}")
+	public ResponseEntity<DatabaseConfig> put(@Valid @RequestBody DatabaseConfigDTO dbDTO,
+			@PathVariable("id") long id) {
 		DatabaseConfig db = dbDTO.toEntity();
 		db.setId(id);
 		service.update(db);

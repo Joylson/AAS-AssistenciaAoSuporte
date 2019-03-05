@@ -1,7 +1,7 @@
 package br.com.aas.entities.enums;
 
 public enum Perfil {
-	ADMIN("ROLE_ADMIN"), SUPORTE("ROLE_SUPORTE"), PROGRAMADOR("ROLE_POGRAMADOR");
+	SUPORTE("ROLE_SUPORTE"), PROGRAMADOR("ROLE_PROGRAMADOR");
 
 	private String descricao;
 

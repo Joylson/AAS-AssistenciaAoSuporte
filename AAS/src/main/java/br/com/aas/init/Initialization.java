@@ -62,11 +62,18 @@ public class Initialization implements CommandLineRunner {
 		us.setLogin("joylson");
 		us.setPassword(bCryptPasswordEncoder.encode("123456"));
 		us.setEmail("joylsont@gmail.com");
-		us.addPerfil(Perfil.ADMIN);
 		us.addPerfil(Perfil.PROGRAMADOR);
+		
+		User us2 = new User();
+		us2.setName("teste");
+		us2.setLogin("teste");
+		us2.setPassword(bCryptPasswordEncoder.encode("123456"));
+		us2.setEmail("teste@gmail.com");
+		us2.addPerfil(Perfil.SUPORTE);
 
 		// Cadastrando usuario
 		usService.save(us);
+		usService.save(us2);
 		
 		QueryInfo qi = new QueryInfo();
 		qi.setTitle("CONSULTA USUARIO");
